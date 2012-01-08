@@ -1,4 +1,4 @@
 # Foursquare login stuff
 
-RewriteRule  ^auth/$			/auth_callback_foursquare_oauth.php?%{QUERY_STRING}	[L]
-RewriteRule  ^signin/$			/signin_foursquare_oauth.php?%{QUERY_STRING}		[L]
+RewriteRule  ^auth/?$			/auth_callback_foursquare_oauth.php?%{QUERY_STRING}	[L]
+RewriteRule  ^signin/?$			/signin_foursquare_oauth.php?%{QUERY_STRING}		[L]

@@ -1,6 +1,12 @@
 <?php
 
 	$GLOBALS['cfg']['foursquare_oauth_key'] = '';
-	$GLOBALS['cfg']['foursquare_oauth_callback'] = $GLOBALS['cfg']['abs_root_url'] . 'auth/';
+	$GLOBALS['cfg']['foursquare_oauth_secret'] = '';
+
+	# As in the /auth rewrite rule defined in www/.htaccess
+	# so you should adjust to taste. This should be a relative
+	# URL as it will be paired with $GLOBALS['cfg']['abs_root_url']
+
+	$GLOBALS['cfg']['foursquare_oauth_callback'] = 'auth/';
 
 ?>

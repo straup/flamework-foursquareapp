@@ -16,8 +16,10 @@
 		exit();
 	}
 
+	$callback = $GLOBALS['cfg']['abs_root_url'] . $GLOBALS['cfg']['foursquare_oauth_callback'];
+
 	$oauth_key = $GLOBALS['cfg']['foursquare_oauth_key'];
-        $oauth_redir = urlencode($GLOBALS['cfg']['foursquare_oauth_callback']);
+        $oauth_redir = urlencode($callback);
 
 	$url = "https://foursquare.com/oauth2/authenticate?client_id={$oauth_key}&response_type=code&redirect_uri=$oauth_redir";
 

@@ -24,11 +24,13 @@
 		error_404();
 	}
 
+	$callback = $GLOBALS['cfg']['abs_root_url'] . $GLOBALS['cfg']['foursquare_oauth_callback'];
+
 	$args = array(
 		'client_id' => $GLOBALS['cfg']['foursquare_oauth_key'],
 		'client_secret' => $GLOBALS['cfg']['foursquare_oauth_secret'],
 		'grant_type' => 'authorization_code',
-		'redirect_uri' => $GLOBALS['cfg']['foursquare_oauth_callback'],
+		'redirect_uri' => $callback,
 		'code' => $code,
 	);
 
