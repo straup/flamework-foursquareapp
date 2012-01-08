@@ -29,6 +29,8 @@ echo ""
 
 # TO DO: generate oauth cookie secret
 
-# cat ${FOURSQUAREAPP}/www/include/config.php.example
+cat ${FOURSQUAREAPP}/www/include/config.php.example
 
 # TO DO: .htaccess configs
+
+cat ${FOURSQUAREAPP}/www/.htaccess

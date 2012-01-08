@@ -1,0 +1,6 @@
+<?php
+
+	$GLOBALS['cfg']['foursquare_oauth_key'] = '';
+	$GLOBALS['cfg']['foursquare_oauth_key'] = $GLOBALS['cfg']['abs_root_url'] . 'auth/';
+
+?>
