@@ -9,16 +9,22 @@
 
 	#################################################################
 
-	function foursquare_api_call($method, $args=array()){
+	function foursquare_api_call($method, $args=array(), $more=array()){
 
 		$method = ltrim($method, "/");
 		$args['v'] = gmdate("Ymd", time());
 
-		$query = http_build_query($args);
+		if ($more['method'] == 'POST'){
 
-		$url = $GLOBALS['foursquare_api_endpoint'] . $method . "?{$query}";
+			$url = $GLOBALS['foursquare_api_endpoint'] . $method;
+			$rsp = http_post($url, $args);
+		}
 
-		$rsp = http_get($url);
+		else{
+			$query = http_build_query($args);
+			$url = $GLOBALS['foursquare_api_endpoint'] . $method . "?{$query}";
+			$rsp = http_get($url);
+		}
 
 		if (! $rsp['ok']){
 			return $rsp;
