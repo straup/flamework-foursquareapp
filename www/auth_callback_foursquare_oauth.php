@@ -101,11 +101,7 @@
 	# Okay, now finish logging the user in (setting cookies, etc.) and
 	# redirecting them to some specific page if necessary.
 
-	$redir = $GLOBALS['cfg']['abs_root_url'];
-
-	if (isset($extra['redir'])){
-		$redir .= $extra['redir'];
-	}
+	$redir = (isset($extra['redir'])) ? $extra['redir'] : '';
 
 	login_do_login($user, $redir);
 	exit();
