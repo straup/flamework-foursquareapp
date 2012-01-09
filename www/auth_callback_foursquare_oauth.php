@@ -29,7 +29,7 @@
 	$rsp = foursquare_api_get_auth_token($code);
 
 	if (! $rsp['ok']){
-		$GLOBALS['error']['no_token'] = 1;
+		$GLOBALS['error']['oauth_access_token'] = 1;
 		$GLOBALS['smarty']->display("page_auth_callback_foursquare_oauth.txt");
 		exit();
 	}
@@ -63,7 +63,7 @@
 		$rsp = foursquare_api_call('users/self', $args);
 
 		if (! $rsp['ok']){
-			$GLOBALS['error']['user_info'] = 1;
+			$GLOBALS['error']['foursquare_userinfo'] = 1;
 			$GLOBALS['smarty']->display("page_auth_callback_foursquare_oauth.txt");
 			exit();
 		}

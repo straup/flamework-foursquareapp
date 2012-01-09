@@ -17,6 +17,8 @@
 		exit();
 	}
 
+	# TO DO: pass redir around...
+
 	$url = foursquare_api_get_auth_url();
 
 	header("location: {$url}");
