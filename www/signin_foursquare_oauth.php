@@ -1,8 +1,9 @@
 <?php
 
 	include("include/init.php");
+	loadlib("foursquare_api");
 
-	$redir = (get_str('redir')) ? get_str('redir') : '/';
+	$redir = $GLOBALS['cfg']['abs_root_url'] . get_str('redir');
 
 	# Some basic sanity checking like are you already logged in?
 
@@ -16,12 +17,7 @@
 		exit();
 	}
 
-	$callback = $GLOBALS['cfg']['abs_root_url'] . $GLOBALS['cfg']['foursquare_oauth_callback'];
-
-	$oauth_key = $GLOBALS['cfg']['foursquare_oauth_key'];
-        $oauth_redir = urlencode($callback);
-
-	$url = "https://foursquare.com/oauth2/authenticate?client_id={$oauth_key}&response_type=code&redirect_uri=$oauth_redir";
+	$url = foursquare_api_get_auth_url();
 
 	header("location: {$url}");
 	exit();

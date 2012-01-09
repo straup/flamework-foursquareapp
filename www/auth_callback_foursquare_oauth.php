@@ -3,7 +3,9 @@
 	include("include/init.php");
 
 	loadlib("http");
-	# loadlib("foursquare_users");
+	loadlib("random");
+	loadlib("foursquare_api");
+	loadlib("foursquare_users");
 
 	# Some basic sanity checking like are you already logged in?
 
@@ -24,37 +26,17 @@
 		error_404();
 	}
 
-	$callback = $GLOBALS['cfg']['abs_root_url'] . $GLOBALS['cfg']['foursquare_oauth_callback'];
-
-	$args = array(
-		'client_id' => $GLOBALS['cfg']['foursquare_oauth_key'],
-		'client_secret' => $GLOBALS['cfg']['foursquare_oauth_secret'],
-		'grant_type' => 'authorization_code',
-		'redirect_uri' => $callback,
-		'code' => $code,
-	);
-
-	$url = 'https://foursquare.com/oauth2/access_token?' . http_build_query($args);
-
-	$rsp = http_get($url);
+	$rsp = foursquare_api_get_auth_token($code);
 
 	if (! $rsp['ok']){
-
-		# do something
+		$GLOBALS['error']['no_token'] = 1;
+		$GLOBALS['smarty']->display("page_auth_callback_foursquare_oauth.txt");
 		exit();
 	}
 
-	$data = json_decode($rsp['body'], 'as hash');
+	$oauth_token = $rsp['oauth_token'];
 
-	if (! $data['access_token']){
-
-		# do something
-		exit();
-	}
-
-	$token = $data['access_token'];
-
-	$foursquare_user = foursquare_users_get_by_access_token($token);
+	$foursquare_user = foursquare_users_get_by_oauth_token($oauth_token);
 
 	if ($user_id = $foursquare_user['user_id']){
 		$user = users_get_by_id($user_id);
@@ -69,13 +51,25 @@
 	}
 
 	# Hello, new user! This part will create entries in two separate
-	# databases: Users and TwitterUsers that are joined by the primary
+	# databases: Users and FoursquareUsers that are joined by the primary
 	# key on the Users table.
 
 	else {
 
-		$username = 'FIX ME';
-		$foursqure_id = 'FIX ME';
+		$args = array(
+			'oauth_token' => $oauth_token,
+		);
+
+		$rsp = foursquare_api_call('users/self', $args);
+
+		if (! $rsp['ok']){
+			$GLOBALS['error']['user_info'] = 1;
+			$GLOBALS['smarty']->display("page_auth_callback_foursquare_oauth.txt");
+			exit();
+		}
+
+		$username = $rsp['rsp']['user']['firstName'];
+		$foursquare_id = $rsp['rsp']['user']['id'];
 
 		$password = random_string(32);
 
@@ -93,7 +87,7 @@
 
 		$foursquare_user = foursquare_users_create_user(array(
 			'user_id' => $user['id'],
-			'access_token' => $token,
+			'oauth_token' => $oauth_token,
 			'foursquare_id' => $foursquare_id,
 		));
 
@@ -107,7 +101,11 @@
 	# Okay, now finish logging the user in (setting cookies, etc.) and
 	# redirecting them to some specific page if necessary.
 
-	$redir = (isset($extra['redir'])) ? $extra['redir'] : '';
+	$redir = $GLOBALS['cfg']['abs_root_url'];
+
+	if (isset($extra['redir'])){
+		$redir .= $extra['redir'];
+	}
 
 	login_do_login($user, $redir);
 	exit();
