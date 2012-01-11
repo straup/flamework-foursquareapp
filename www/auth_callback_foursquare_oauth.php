@@ -38,7 +38,7 @@
 
 	$foursquare_user = foursquare_users_get_by_oauth_token($oauth_token);
 
-	if ($user_id = $foursquare_user['user_id']){
+	if (($foursquare_user) && ($user_id = $foursquare_user['user_id'])){
 		$user = users_get_by_id($user_id);
 	}
 
@@ -68,8 +68,13 @@
 			exit();
 		}
 
-		$username = $rsp['rsp']['user']['firstName'];
 		$foursquare_id = $rsp['rsp']['user']['id'];
+		$username = $rsp['rsp']['user']['firstName'];
+		$email = $rsp['rsp']['user']['contact']['email-poo'];
+
+		if (! $email){
+			$email = "{$foursquare_id}@donotsend-foursquare.com";
+		}
 
 		$password = random_string(32);
 
