@@ -32,7 +32,6 @@
 
 		$rsp = db_insert('FoursquareUsers', $hash);
 
-dumper($rsp);
 		if (! $rsp['ok']){
 			return null;
 		}
@@ -43,7 +42,6 @@ dumper($rsp);
 		$cache_key = "foursquare_user_{$user['id']}";
 		cache_set($cache_key, $user, "cache locally");
 
-dumper("WTF");
 		return $user;
 	}
 
