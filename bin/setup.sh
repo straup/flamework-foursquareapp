@@ -10,7 +10,7 @@ echo "copying application files to ${PROJECT}"
 cp ${FOURSQUAREAPP}/www/*.php ${PROJECT}/www/
 
 # echo "copying templates to ${PROJECT}"
-# cp ${FOURSQUAREAPP}/www/templates/*.txt ${PROJECT}/www/templates/
+cp ${FOURSQUAREAPP}/www/templates/*.txt ${PROJECT}/www/templates/
 
 echo "copying library code to ${PROJECT}"
 cp ${FOURSQUAREAPP}/www/include/*.php ${PROJECT}/www/include/
